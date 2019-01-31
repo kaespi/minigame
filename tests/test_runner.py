@@ -1,5 +1,6 @@
 
 import unittest
+import context
 
 from config import Gameconfig
 from runner import Runner
