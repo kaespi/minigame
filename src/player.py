@@ -1,8 +1,8 @@
 import pygame
 
-from runner import Runner
-from enumtypes import Direction
-from gridutil import grid_index
+from src.runner import Runner
+from src.enumtypes import Direction
+from src.gridutil import grid_index
 
 
 class Player(Runner):

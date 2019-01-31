@@ -1,5 +1,5 @@
-from gridline import Gridline
-from gridutil import grid_index_up, grid_index_right, grid_index_down, grid_index_left
+from src.gridline import Gridline
+from src.gridutil import grid_index_up, grid_index_right, grid_index_down, grid_index_left
 
 
 class Grid():

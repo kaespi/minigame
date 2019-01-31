@@ -1,7 +1,7 @@
 import pygame
 
-from runner import Runner
-from enumtypes import Direction
+from src.runner import Runner
+from src.enumtypes import Direction
 
 
 class Bug(Runner):

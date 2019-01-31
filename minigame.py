@@ -1,16 +1,14 @@
 
-import sys
-import os
 import pygame
+import os
 
-sys.path.insert(0, os.path.abspath(os.path.join(os.path.dirname(__file__), 'src')))
+from src.config import Gameconfig
+from src.grid import Grid
+from src.square import Square
+from src.player import Player
+from src.bug import Bug
+from src.enumtypes import Direction
 
-from config import Gameconfig
-from grid import Grid
-from square import Square
-from player import Player
-from bug import Bug
-from enumtypes import Direction
 
 def tmg_main():
     """Main starting point for the game to take off"""
@@ -21,7 +19,7 @@ def tmg_main():
     screen = pygame.display.set_mode(cfg.screen_size)
 
     grid = Grid(cfg, screen)
-    grid.read_grid("level_test2.txt")
+    grid.read_grid(os.path.join(os.path.dirname(__file__), 'levels', 'level_test2.txt'))
     #grid.read_grid("test_grid1.txt")
     grid.check_grid()
 
