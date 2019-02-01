@@ -54,6 +54,10 @@ class Player(Runner):
                 # there's a movement direction change "queued". Apply it now. The player risks
                 # that this will lead to no movement, because it's not possible. But this has
                 # to be left to the player!
+
+                old_direction = self.move_direction
+                old_vel = self.vel
+
                 if self.next_direction is not None:
                     self.move_direction = self.next_direction
                     self.next_direction = None
@@ -63,9 +67,19 @@ class Player(Runner):
                 if can_move:
                     self.move(0)
                 else:
-                    self.vel = 0
-                    self.move_direction = None
-                    self.dt_ms_rem = 0
+                    # restore the previous (i.e. current) movement and continue with it if possible. If
+                    # possible then the commanded direction change has to be applied later. If cannot continue
+                    # with the previous (i.e. current) movement then stand still
+                    self.vel = old_vel
+                    self.next_direction = self.move_direction
+                    self.move_direction = old_direction
+
+                    if self.can_move_on():
+                        self.move(0)
+                    else:
+                        self.vel = 0
+                        self.move_direction = None
+                        self.next_direction = None
 
             self.dt_ms_rem = 0
 
