@@ -19,20 +19,16 @@ def tmg_main():
     screen = pygame.display.set_mode(cfg.screen_size)
 
     grid = Grid(cfg, screen)
-    grid.read_grid(os.path.join(os.path.dirname(__file__), 'levels', 'level_test2.txt'))
+    grid.read_grid(os.path.join(os.path.dirname(__file__), 'levels', 'level_test1.txt'))
     #grid.read_grid("test_grid1.txt")
     grid.check_grid()
 
+    grid.init_squares()
+
     player = Player(cfg, screen)
     player.set_grid(grid)
-    player.set_position(1, 1)
+    player.set_position(grid.players_start[0][0], grid.players_start[0][1])
     players = [player]
-
-    squares = [Square(cfg, screen, (0, 0))]
-    squares[0].surrounding_gridlines = [grid.gridlines[0][0],
-                                        grid.gridlines[1][0],
-                                        grid.gridlines[1][1],
-                                        grid.gridlines[2][0]]
 
     # initializes the bugs
     bugs = []
@@ -81,7 +77,7 @@ def tmg_main():
             bug.update_position(dt_ms)
 
         any_square_not_complete = False
-        for square in squares:
+        for square in grid.squares:
             if not square.is_complete():
                 any_square_not_complete = True
         if not any_square_not_complete:
@@ -89,8 +85,6 @@ def tmg_main():
             break
 
         # draw the grid
-        for square in squares:
-            square.draw()
         grid.draw_grid()
 
         # draw the players and bugs

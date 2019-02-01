@@ -19,6 +19,10 @@ class Square():
         # a list of gridlines around this square. If they are completed then this square is completed
         self.surrounding_gridlines = []
 
+    def set_surrounding_gridlines(self, gridlines):
+        """Sets the surrounding gridlines for this square"""
+        self.surrounding_gridlines = gridlines
+
     def is_complete(self):
         """Checks if all surrounding gridlines are completed and therefore this square can be marked as completed"""
         if not self.completed:
