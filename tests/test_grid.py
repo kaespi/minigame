@@ -247,13 +247,42 @@ class TestGrid(unittest.TestCase):
         self.assertEqual(len(self.grid.gridlines[2]), 1)
         self.assertTrue(self.grid.gridlines[2][0] is not None)
 
+        # the grid is ok...
         self.assertTrue(self.grid.check_grid())
+
+        # initialize the squaures
+        self.grid.init_squares()
+
+        self.assertEqual(len(self.grid.squares), 1)
+        self.assertEqual(len(self.grid.squares[0].surrounding_gridlines), 4)
+        self.assertTrue(self.grid.gridlines[0][0] in self.grid.squares[0].surrounding_gridlines)
+        self.assertTrue(self.grid.gridlines[1][0] in self.grid.squares[0].surrounding_gridlines)
+        self.assertTrue(self.grid.gridlines[1][1] in self.grid.squares[0].surrounding_gridlines)
+        self.assertTrue(self.grid.gridlines[2][0] in self.grid.squares[0].surrounding_gridlines)
 
     def test_read_grid2(self):
         """Tests grid parsing from file test_grid2.txt (square with one open side)"""
         self.grid.read_grid("test_grid2.txt")
 
         self.assertFalse(self.grid.check_grid())
+
+    def test_read_grid3(self):
+        """Tests grid parsing from file test_grid3.txt (two squares concatenated surrounded by one big grid line"""
+        self.grid.read_grid("test_grid3.txt")
+
+        self.assertTrue(self.grid.check_grid())
+
+        # check the squares
+        self.grid.init_squares()
+
+        self.assertEqual(len(self.grid.squares), 2)
+        self.assertEqual(len(self.grid.squares[0].surrounding_gridlines), 6)
+        self.assertTrue(self.grid.gridlines[0][0] in self.grid.squares[0].surrounding_gridlines)
+        self.assertTrue(self.grid.gridlines[0][1] in self.grid.squares[0].surrounding_gridlines)
+        self.assertTrue(self.grid.gridlines[1][0] in self.grid.squares[0].surrounding_gridlines)
+        self.assertTrue(self.grid.gridlines[1][2] in self.grid.squares[0].surrounding_gridlines)
+        self.assertTrue(self.grid.gridlines[2][0] in self.grid.squares[0].surrounding_gridlines)
+        self.assertTrue(self.grid.gridlines[2][1] in self.grid.squares[0].surrounding_gridlines)
 
 
 unittest.main()
