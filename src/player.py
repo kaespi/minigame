@@ -14,6 +14,8 @@ class Player(Runner):
         self.color = cfg.player_color
         self.r = int(0.5 * cfg.player_size)
 
+        self.caught = False
+
         super().__init__(cfg, screen)
 
     def draw(self):

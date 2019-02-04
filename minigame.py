@@ -4,7 +4,7 @@ import os
 
 from src.config import Gameconfig
 from src.grid import Grid
-from src.square import Square
+from src.gameaction import bug_catched_player
 from src.player import Player
 from src.bug import Bug
 from src.enumtypes import Direction
@@ -74,6 +74,9 @@ def tmg_main():
             player.update_position(dt_ms)
         for bug in bugs:
             bug.update_position(dt_ms)
+
+        # check if any bug caught any player
+        bug_catched_player(bugs, players, cfg.bug_size/cfg.grid_height, cfg.player_size/cfg.grid_height)
 
         any_square_not_complete = False
         for square in grid.squares:
