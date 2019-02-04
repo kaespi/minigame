@@ -9,10 +9,6 @@ class Bug(Runner):
 
     def __init__(self, cfg, screen):
         """Constructor for the Bug class"""
-        # geometric details
-        self.color = cfg.bug_color
-        self.r = int(0.5 * cfg.bug_size)
-
         super().__init__(cfg, screen)
 
     def find_starting_direction(self):
@@ -33,7 +29,7 @@ class Bug(Runner):
         if self.x is not None and self.y is not None:
             x = int(self.x * self.cfg.grid_height + self.cfg.grid_origin[0] + 0.5)
             y = int(self.y * self.cfg.grid_height + self.cfg.grid_origin[1] + 0.5)
-            pygame.draw.circle(self.screen, self.color, (x, y), self.r, 0)
+            pygame.draw.circle(self.screen, self.cfg.bug_color, (x, y), int(0.5 * self.cfg.bug_size), 0)
 
     def reverse_direction(self):
         """Reverses the direction (i.e. up(0)<->down(2), right(1)<->left(3)"""

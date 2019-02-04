@@ -10,10 +10,6 @@ class Player(Runner):
 
     def __init__(self, cfg, screen):
         """Constructor for the Player class"""
-        # geometric details
-        self.color = cfg.player_color
-        self.r = int(0.5 * cfg.player_size)
-
         self.caught = False
 
         super().__init__(cfg, screen)
@@ -23,12 +19,18 @@ class Player(Runner):
         if self.x is not None and self.y is not None:
             x = int(self.x * self.cfg.grid_height + self.cfg.grid_origin[0] + 0.5)
             y = int(self.y * self.cfg.grid_height + self.cfg.grid_origin[1] + 0.5)
-            pygame.draw.circle(self.screen, self.color, (x, y), self.r, 0)
+
+            if self.caught:
+                color = self.cfg.player_color_caught
+            else:
+                color = self.cfg.player_color
+
+            pygame.draw.circle(self.screen, color, (x, y), int(.5 * self.cfg.player_size), 0)
 
     def update_position(self, dt_ms):
         """updates the position of the player"""
 
-        if dt_ms > 0:
+        if dt_ms > 0 and not self.caught:
             # reset the node visited (but only if it's not the second part of a partial movement)
             if self.dt_ms_rem == 0:
                 self.node_visited_x = None

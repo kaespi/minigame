@@ -22,6 +22,7 @@ class Gameconfig():
         # players
         self.player_size = 8                    # diameter of the player [pixel]
         self.player_color = (0, 130, 0)         # color of the player (circle) (RGB)
+        self.player_color_caught = (80, 80, 80) # color of the player after it was caught (RGB)
 
         # bugs
         self.bug_size = 10                      # diameter of the bug [pixel]
