@@ -20,7 +20,6 @@ def tmg_main():
 
     grid = Grid(cfg, screen)
     grid.read_grid(os.path.join(os.path.dirname(__file__), 'levels', 'level_test1.txt'))
-    #grid.read_grid("test_grid1.txt")
     grid.check_grid()
 
     grid.init_squares()
