@@ -76,7 +76,7 @@ def tmg_main():
             bug.update_position(dt_ms)
 
         # check if any bug caught any player
-        bug_catched_player(bugs, players, cfg.bug_size/cfg.grid_height, cfg.player_size/cfg.grid_height)
+        bug_catched_player(bugs, players, .5*cfg.bug_size/cfg.grid_height, .5*cfg.player_size/cfg.grid_height)
 
         any_square_not_complete = False
         for square in grid.squares:
