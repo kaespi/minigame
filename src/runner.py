@@ -17,7 +17,7 @@ class Runner():
         self.vel = 0                    # velocity [grid step/ms]
         self.move_direction = None      # direction of the movement (0=up, 1=right, 2=down, 3=left)
         self.next_direction = None      # commanded next direction (0=up, 1=right, 2=down, 3=left)
-        self.dt_ms_rem = 0              # if a time step has to be split into two parts, then that's the remaining part [ms]
+        self.dt_ms_rem = 0              # if a time step has to be split into two parts, that's the remaining part [ms]
 
         self.node_visited_x = None      # x-coordinate of the node visited right now
         self.node_visited_y = None      # y-coordinate of the node visited right now
