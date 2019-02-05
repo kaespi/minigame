@@ -7,6 +7,7 @@ class Gridline():
     def __init__(self, cfg, screen, p1, p2):
         """Constructor for a grid element"""
         self.screen = screen
+        self.cfg = cfg
 
         self.completed = 0  # true if this grid element is completed
         self.ratioDone1 = 0.0  # how much of the grid element is completed (top->bottom, left->right)
@@ -31,11 +32,6 @@ class Gridline():
         self.x2 = self.x2*cfg.grid_height + cfg.grid_origin[0]
         self.y1 = self.y1*cfg.grid_height + cfg.grid_origin[1]
         self.y2 = self.y2*cfg.grid_height + cfg.grid_origin[1]
-
-        # style of the grid element
-        self.w = cfg.grid_width
-        self.color_fresh = cfg.grid_color_fresh
-        self.color_done = cfg.grid_color_done
 
     def is_complete(self):
         """Returns true if the element is completed"""
@@ -68,8 +64,7 @@ class Gridline():
     def draw(self):
         """Draws the grid element"""
         if self.is_complete():
-            #self.draw_line(self.color_complete, self.x1, self.y1, self.x2, self.y2)
-            self.draw_line((0,0,200), self.x1, self.y1, self.x2, self.y2)
+            self.draw_line(self.cfg.grid_color_complete, self.x1, self.y1, self.x2, self.y2)
         else:
             x1 = self.x1
             y1 = self.y1
@@ -80,16 +75,16 @@ class Gridline():
                 # the next line starts where this ended
                 x1 = self.x1 + self.ratioDone1 * (self.x2 - self.x1)
                 y1 = self.y1 + self.ratioDone1 * (self.y2 - self.y1)
-                self.draw_line(self.color_done, self.x1, self.y1, x1, y1)
+                self.draw_line(self.cfg.grid_color_done, self.x1, self.y1, x1, y1)
 
             if self.ratioDone2 > 0:
                 # the next line ends where this started
                 x2 = self.x2 - self.ratioDone2 * (self.x2 - self.x1)
                 y2 = self.y2 - self.ratioDone2 * (self.y2 - self.y1)
-                self.draw_line(self.color_done, x2, y2, self.x2, self.y2)
+                self.draw_line(self.cfg.grid_color_done, x2, y2, self.x2, self.y2)
 
-            self.draw_line(self.color_fresh, x1, y1, x2, y2)
+            self.draw_line(self.cfg.grid_color_fresh, x1, y1, x2, y2)
 
     def draw_line(self, color, x1, y1, x2, y2):
         """Draws a line"""
-        pygame.draw.line(self.screen, color, (x1, y1), (x2, y2), self.w)
+        pygame.draw.line(self.screen, color, (x1, y1), (x2, y2), self.cfg.grid_width)
