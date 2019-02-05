@@ -4,10 +4,9 @@ import os
 
 from src.config import Gameconfig
 from src.grid import Grid
-from src.gameaction import bug_catched_player
+import src.gameaction
 from src.player import Player
 from src.bug import Bug
-from src.enumtypes import Direction
 
 
 def tmg_main():
@@ -42,60 +41,7 @@ def tmg_main():
             bug.vel = cfg.speed
         bugs.append(bug)
 
-    t_ms = pygame.time.get_ticks()
-
-    while True:
-        screen.fill(cfg.bg_color)
-
-        # needed to keep the events in sync with the system. According to pygame manual should
-        # should be called once per game loop
-        pygame.event.pump()
-
-        events = pygame.event.get()
-        for event in events:
-            if event.type == pygame.KEYDOWN:
-                if event.key == pygame.K_ESCAPE:
-                    quit()
-                elif event.key == pygame.K_UP:
-                    players[0].command_direction(Direction.up)
-                elif event.key == pygame.K_RIGHT:
-                    players[0].command_direction(Direction.right)
-                elif event.key == pygame.K_DOWN:
-                    players[0].command_direction(Direction.down)
-                elif event.key == pygame.K_LEFT:
-                    players[0].command_direction(Direction.left)
-
-        t_now_ms = pygame.time.get_ticks()
-        dt_ms = t_now_ms - t_ms
-        t_ms = t_now_ms
-
-        # move the players and bugs on the grid on time step ahead
-        for player in players:
-            player.update_position(dt_ms)
-        for bug in bugs:
-            bug.update_position(dt_ms, players)
-
-        # check if any bug caught any player
-        bug_catched_player(bugs, players, .5*cfg.bug_size/cfg.grid_height, .5*cfg.player_size/cfg.grid_height)
-
-        any_square_not_complete = False
-        for square in grid.squares:
-            if not square.is_complete():
-                any_square_not_complete = True
-        if not any_square_not_complete:
-            print("Level completed")
-            break
-
-        # draw the grid
-        grid.draw_grid()
-
-        # draw the players and bugs
-        for player in players:
-            player.draw()
-        for bug in bugs:
-            bug.draw()
-
-        pygame.display.update()
+    src.gameaction.run_level(screen, cfg, grid, players, bugs)
 
 
 tmg_main()

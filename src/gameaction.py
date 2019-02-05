@@ -1,5 +1,8 @@
 
+import pygame
+
 from src.gridutil import grid_index_right, grid_index_down
+from src.enumtypes import Direction
 
 
 def bug_catched_player(bugs, players, bug_size=10/50, player_size=8/50):
@@ -71,3 +74,61 @@ def can_you_see_me(p1, p2, gridlines):
         can_see = not gap_found
 
     return can_see
+
+
+def run_level(screen, cfg, grid, players, bugs):
+    """Runs a level (main while loop during playing)"""
+    t_ms = pygame.time.get_ticks()
+
+    while True:
+        screen.fill(cfg.bg_color)
+
+        # needed to keep the events in sync with the system. According to pygame manual should
+        # should be called once per game loop
+        pygame.event.pump()
+
+        events = pygame.event.get()
+        for event in events:
+            if event.type == pygame.KEYDOWN:
+                if event.key == pygame.K_ESCAPE:
+                    quit()
+                elif event.key == pygame.K_UP:
+                    players[0].command_direction(Direction.up)
+                elif event.key == pygame.K_RIGHT:
+                    players[0].command_direction(Direction.right)
+                elif event.key == pygame.K_DOWN:
+                    players[0].command_direction(Direction.down)
+                elif event.key == pygame.K_LEFT:
+                    players[0].command_direction(Direction.left)
+
+        t_now_ms = pygame.time.get_ticks()
+        dt_ms = t_now_ms - t_ms
+        t_ms = t_now_ms
+
+        # move the players and bugs on the grid on time step ahead
+        for player in players:
+            player.update_position(dt_ms)
+        for bug in bugs:
+            bug.update_position(dt_ms, players)
+
+        # check if any bug caught any player
+        bug_catched_player(bugs, players, .5*cfg.bug_size/cfg.grid_height, .5*cfg.player_size/cfg.grid_height)
+
+        any_square_not_complete = False
+        for square in grid.squares:
+            if not square.is_complete():
+                any_square_not_complete = True
+        if not any_square_not_complete:
+            print("Level completed")
+            break
+
+        # draw the grid
+        grid.draw_grid()
+
+        # draw the players and bugs
+        for player in players:
+            player.draw()
+        for bug in bugs:
+            bug.draw()
+
+        pygame.display.update()
