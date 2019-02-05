@@ -28,11 +28,6 @@ class Gridline():
             self.y1 = p1[1]
             self.y2 = p2[1]
 
-        self.x1 = self.x1*cfg.grid_height + cfg.grid_origin[0]
-        self.x2 = self.x2*cfg.grid_height + cfg.grid_origin[0]
-        self.y1 = self.y1*cfg.grid_height + cfg.grid_origin[1]
-        self.y2 = self.y2*cfg.grid_height + cfg.grid_origin[1]
-
     def is_complete(self):
         """Returns true if the element is completed"""
         if self.completed:
@@ -63,25 +58,29 @@ class Gridline():
 
     def draw(self):
         """Draws the grid element"""
-        if self.is_complete():
-            self.draw_line(self.cfg.grid_color_complete, self.x1, self.y1, self.x2, self.y2)
-        else:
-            x1 = self.x1
-            y1 = self.y1
-            x2 = self.x2
-            y2 = self.y2
+        x1 = self.x1*self.cfg.grid_height + self.cfg.grid_origin[0]
+        x2 = self.x2*self.cfg.grid_height + self.cfg.grid_origin[0]
+        y1 = self.y1*self.cfg.grid_height + self.cfg.grid_origin[1]
+        y2 = self.y2*self.cfg.grid_height + self.cfg.grid_origin[1]
 
+        if self.is_complete():
+            self.draw_line(self.cfg.grid_color_complete, x1, y1, x2, y2)
+        else:
             if self.ratioDone1 > 0:
                 # the next line starts where this ended
-                x1 = self.x1 + self.ratioDone1 * (self.x2 - self.x1)
-                y1 = self.y1 + self.ratioDone1 * (self.y2 - self.y1)
-                self.draw_line(self.cfg.grid_color_done, self.x1, self.y1, x1, y1)
+                x1_orig = x1
+                y1_orig = y1
+                x1 = x1 + self.ratioDone1 * (x2 - x1)
+                y1 = y1 + self.ratioDone1 * (y2 - y1)
+                self.draw_line(self.cfg.grid_color_done, x1_orig, y1_orig, x1, y1)
 
             if self.ratioDone2 > 0:
                 # the next line ends where this started
-                x2 = self.x2 - self.ratioDone2 * (self.x2 - self.x1)
-                y2 = self.y2 - self.ratioDone2 * (self.y2 - self.y1)
-                self.draw_line(self.cfg.grid_color_done, x2, y2, self.x2, self.y2)
+                x2_orig = x2
+                y2_orig = y2
+                x2 = x2 - self.ratioDone2 * (x2 - x1)
+                y2 = y2 - self.ratioDone2 * (y2 - y1)
+                self.draw_line(self.cfg.grid_color_done, x2, y2, x2_orig, y2_orig)
 
             self.draw_line(self.cfg.grid_color_fresh, x1, y1, x2, y2)
 
