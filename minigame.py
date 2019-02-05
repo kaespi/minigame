@@ -22,10 +22,12 @@ def tmg_main():
 
     grid.init_squares()
 
-    player = Player(cfg, screen)
-    player.set_grid(grid)
-    player.set_position(grid.players_start[0][0], grid.players_start[0][1])
-    players = [player]
+    players = []
+    for player_start in grid.players_start:
+        player = Player(cfg, screen)
+        player.set_grid(grid)
+        player.set_position(player_start[0], player_start[1])
+        players.append(player)
 
     # initializes the bugs
     bugs = []
