@@ -2,6 +2,7 @@ import pygame
 
 from src.runner import Runner
 from src.enumtypes import Direction
+from src.gameaction import can_you_see_me
 
 
 class Bug(Runner):
@@ -45,7 +46,7 @@ class Bug(Runner):
             else:
                 self.move_direction = None
 
-    def update_position(self, dt_ms):
+    def update_position(self, dt_ms, players=[]):
         """updates the position of the bug"""
 
         if dt_ms > 0:
@@ -59,6 +60,10 @@ class Bug(Runner):
                 self.reverse_direction()
                 if can_move:
                     node_crossed = self.move(dt_ms)
+
+            # update the bugs direction to try to catch a player
+            if len(players):
+                self.ai_update_direction(players)
 
             # if a node was crossed in the movement above then another move has to be executed
             # (but since the remaining time was recorded internally we don't have to worry
@@ -76,3 +81,46 @@ class Bug(Runner):
                     self.dt_ms_rem = 0
 
             self.dt_ms_rem = 0
+
+    def ai_update_direction(self, players):
+        """Updates the bug's movement direction depending on where the players are"""
+
+        # The logic behind the bugs' intelligence is copied from the original TAF minigame. If there are
+        # gridlines between a bug and a player without any gap the bug starts moving towards to player. But
+        # be careful that there may be multiple players. To prevent repeated reversing of direction the bug
+        # should only change its direction if it is not yet following a player.
+
+        already_following_player = False
+        new_directions = []
+
+        for player in players:
+            if can_you_see_me([self.x, self.y], [player.x, player.y], self.grid.gridlines):
+                # the bug can see this player. Therefore move towards him. But only change direction
+                # if the current movement is not following any player
+                if self.x < player.x:
+                    if self.move_direction == Direction.right:
+                        already_following_player = True
+                        break
+                    else:
+                        new_directions.append(Direction.right)
+                elif self.x > player.x:
+                    if self.move_direction == Direction.left:
+                        already_following_player = True
+                        break
+                    else:
+                        new_directions.append(Direction.left)
+                elif self.y < player.y:
+                    if self.move_direction == Direction.down:
+                        already_following_player = True
+                        break
+                    else:
+                        new_directions.append(Direction.down)
+                elif self.y > player.y:
+                    if self.move_direction == Direction.up:
+                        already_following_player = True
+                        break
+                    else:
+                        new_directions.append(Direction.up)
+
+        if not already_following_player and len(new_directions) >= 1:
+            self.move_direction = new_directions[0]

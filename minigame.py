@@ -73,7 +73,7 @@ def tmg_main():
         for player in players:
             player.update_position(dt_ms)
         for bug in bugs:
-            bug.update_position(dt_ms)
+            bug.update_position(dt_ms, players)
 
         # check if any bug caught any player
         bug_catched_player(bugs, players, .5*cfg.bug_size/cfg.grid_height, .5*cfg.player_size/cfg.grid_height)
