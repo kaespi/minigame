@@ -1,3 +1,5 @@
+import pygame
+
 
 class Gameconfig():
     """Handles the configuration options for the game"""
@@ -30,3 +32,14 @@ class Gameconfig():
 
         # game behavior
         self.speed = 0.002                          # movement speed [pixel/ms]
+
+        # controls
+        self.player1_up = pygame.K_UP               # player 1: key up
+        self.player1_right = pygame.K_RIGHT         # player 1: key right
+        self.player1_down = pygame.K_DOWN           # player 1: key down
+        self.player1_left = pygame.K_LEFT           # player 1: key left
+
+        self.player2_up = pygame.K_w                # player 2: key up
+        self.player2_right = pygame.K_d             # player 2: key right
+        self.player2_down = pygame.K_s              # player 2: key down
+        self.player2_left = pygame.K_a              # player 2: key left

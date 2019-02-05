@@ -91,13 +91,13 @@ def run_level(screen, cfg, grid, players, bugs):
             if event.type == pygame.KEYDOWN:
                 if event.key == pygame.K_ESCAPE:
                     quit()
-                elif event.key == pygame.K_UP:
+                elif event.key == cfg.player1_up:
                     players[0].command_direction(Direction.up)
-                elif event.key == pygame.K_RIGHT:
+                elif event.key == cfg.player1_right:
                     players[0].command_direction(Direction.right)
-                elif event.key == pygame.K_DOWN:
+                elif event.key == cfg.player1_down:
                     players[0].command_direction(Direction.down)
-                elif event.key == pygame.K_LEFT:
+                elif event.key == cfg.player1_left:
                     players[0].command_direction(Direction.left)
 
         t_now_ms = pygame.time.get_ticks()
