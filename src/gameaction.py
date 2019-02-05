@@ -120,6 +120,13 @@ def run_level(screen, cfg, grid, players, bugs):
 
         # check if any bug caught any player
         bug_catched_player(bugs, players, .5*cfg.bug_size/cfg.grid_height, .5*cfg.player_size/cfg.grid_height)
+        any_player_alive = False
+        for player in players:
+            if not player.caught:
+                any_player_alive = True
+        if not any_player_alive:
+            print("Level failed")
+            return False
 
         any_square_not_complete = False
         for square in grid.squares:
@@ -127,7 +134,7 @@ def run_level(screen, cfg, grid, players, bugs):
                 any_square_not_complete = True
         if not any_square_not_complete:
             print("Level completed")
-            break
+            return True
 
         # draw the grid
         grid.draw_grid()
