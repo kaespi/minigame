@@ -1,4 +1,3 @@
-
 from src.gridutil import grid_index_up, grid_index_right, grid_index_down, grid_index_left
 from src.enumtypes import Direction
 
