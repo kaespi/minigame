@@ -94,6 +94,10 @@ class Bug(Runner):
         new_directions = []
 
         for player in players:
+            # ignore players which are already caught
+            if player.caught:
+                continue
+
             if can_you_see_me([self.x, self.y], [player.x, player.y], self.grid.gridlines):
                 # the bug can see this player. Therefore move towards him. But only change direction
                 # if the current movement is not following any player
