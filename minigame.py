@@ -1,4 +1,9 @@
-import pygame
+import sys
+
+v = sys.version_info
+if v[0] < 3:
+    print("Minigame needs Python 3 to run")
+    sys.exit(1)
 
 import src.game
 
