@@ -14,6 +14,9 @@ class Game():
 
     def __init__(self):
         """Constructor for the Game class"""
+        # initializes pygame
+        pygame.init()
+
         # loads the configuration (start with default values)
         self.cfg = Gameconfig()
 
