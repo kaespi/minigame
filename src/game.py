@@ -121,17 +121,11 @@ class Game():
             for player in self.players:
                 if not player.caught:
                     any_player_alive = True
-            if not any_player_alive:
-                print("Level failed")
-                return False
 
             any_square_not_complete = False
             for square in self.grid.squares:
                 if not square.is_complete():
                     any_square_not_complete = True
-            if not any_square_not_complete:
-                print("Level completed")
-                return True
 
             # draw the grid
             self.grid.draw_grid()
@@ -143,3 +137,10 @@ class Game():
                 bug.draw()
 
             pygame.display.update()
+
+            if not any_player_alive:
+                print("Level failed")
+                return False
+            elif not any_square_not_complete:
+                print("Level completed")
+                return True
