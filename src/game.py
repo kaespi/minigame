@@ -1,12 +1,14 @@
 import pygame
 import os
+import time
 
 from src.config import Gameconfig
+from src.menu import Menu
 from src.grid import Grid
 from src.player import Player
 from src.bug import Bug
 from src.gameaction import bug_catched_player
-from src.enumtypes import Direction
+from src.enumtypes import Direction, Menuentry
 
 
 class Game():
@@ -23,10 +25,26 @@ class Game():
         # initialize the window
         self.screen = pygame.display.set_mode(self.cfg.screen_size)
 
+        # Instantiate the menu
+        self.menu = Menu(self.screen, self.cfg)
+
         # initialize the main game objects
         self.grid = None
         self.players = []
         self.bugs = []
+
+    def launch_menu(self):
+        """Starts displaying the menu"""
+        exit_menu = False
+        while not exit_menu:
+            menu_choice = self.menu.main_menu()
+            if menu_choice == Menuentry.run_level:
+                if self.load_level('level_test1.txt'):
+                    level_result = self.run_level()
+                    if level_result is None:
+                        exit_menu = True
+            else:
+                exit_menu = True
 
     def load_level(self, filename):
         """Loads a level file"""
@@ -73,7 +91,7 @@ class Game():
         """Runs a level (main while loop during playing)"""
         if self.grid is None or len(self.players) == 0:
             # if there's no grid or no player cannot do anything and therefore terminate early
-            return False
+            return None
 
         t_ms = pygame.time.get_ticks()
 
@@ -88,7 +106,7 @@ class Game():
             for event in events:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        quit()
+                        return None
                     elif event.key == self.cfg.player1_up and len(self.players) >= 1:
                         self.players[0].command_direction(Direction.up)
                     elif event.key == self.cfg.player1_right and len(self.players) >= 1:
@@ -143,7 +161,9 @@ class Game():
 
             if not any_player_alive:
                 print("Level failed")
+                time.sleep(3)
                 return False
             elif not any_square_not_complete:
                 print("Level completed")
+                time.sleep(3)
                 return True
