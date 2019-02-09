@@ -170,9 +170,9 @@ class Game():
 
             if not any_player_alive:
                 print("Level failed")
-                time.sleep(3)
+                time.sleep(2)
                 return False
             elif not any_square_not_complete:
                 print("Level completed")
-                time.sleep(3)
+                time.sleep(2)
                 return True
