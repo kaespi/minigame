@@ -74,7 +74,6 @@ class Menu():
     def draw_menu(self, entries, selected, font, font_size, clear_background=False, background_surface=None):
         """Actually draws the menu and updates the display"""
         screen_width, screen_height = self.screen.get_size()
-        y = 10
 
         if clear_background:
             self.screen.fill(self.cfg.bg_color)
@@ -99,6 +98,11 @@ class Menu():
         d = int(box_height * 0.1)
         box_height += d
         box_width += d
+
+        dy = int(font_size * 1.5)
+
+        menu_height = (len(entries)-1) * dy + box_height
+        y = int((screen_height - menu_height) / 3)
 
         if box_width < screen_width / 2:
             box_width = int(screen_width/2)
@@ -126,7 +130,7 @@ class Menu():
             h = get_true_text_height(font, entries[ix]['text'])
             text_y = y + int((box_height - h)/2 - 0.5)
             self.screen.blit(surfaces_text[ix], (text_x, text_y))
-            y += int(font_size * 1.5)
+            y += dy
 
         pygame.display.update()
 
