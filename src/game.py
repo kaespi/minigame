@@ -96,8 +96,6 @@ class Game():
         t_ms = pygame.time.get_ticks()
 
         while True:
-            self.screen.fill(self.cfg.bg_color)
-
             # needed to keep the events in sync with the system. According to pygame manual should
             # should be called once per game loop
             pygame.event.pump()
@@ -150,6 +148,9 @@ class Game():
             for square in self.grid.squares:
                 if not square.is_complete():
                     any_square_not_complete = True
+
+            # drawing
+            self.screen.fill(self.cfg.bg_color)
 
             # draw the grid
             self.grid.draw_grid()
