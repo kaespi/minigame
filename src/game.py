@@ -129,6 +129,11 @@ class Game():
             dt_ms = t_now_ms - t_ms
             t_ms = t_now_ms
 
+            # save CPU: if no full millisecond elapsed since the last update, there's really
+            # no need to redraw everythiing. Therefore just continue
+            if dt_ms == 0:
+                continue
+
             # move the players and bugs on the grid on time step ahead
             for player in self.players:
                 player.update_position(dt_ms)
