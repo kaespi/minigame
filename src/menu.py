@@ -47,6 +47,8 @@ class Menu():
             if update_display:
                 self.draw_menu(entries, selected, font, font_size, clear_background)
 
+            update_display = False
+
             # needed to keep the events in sync with the system. According to pygame manual should
             # should be called once per game loop
             pygame.event.pump()
@@ -58,8 +60,10 @@ class Menu():
                         return None
                     elif event.key == pygame.K_DOWN and selected < len(entries)-1:
                         selected += 1
+                        update_display = True
                     elif event.key == pygame.K_UP and selected > 0:
                         selected -= 1
+                        update_display = True
                     elif event.key == pygame.K_RETURN:
                         return entries[selected]['key']
 
