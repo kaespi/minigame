@@ -43,3 +43,9 @@ class Gameconfig():
         self.player2_right = pygame.K_d             # player 2: key right
         self.player2_down = pygame.K_s              # player 2: key down
         self.player2_left = pygame.K_a              # player 2: key left
+
+        # menu
+        self.menu_entry_color_bg = None             # background color for the menu entries square (RGB)
+        self.menu_entry_color_sel = (0, 50, 150)    # background color for the selected menu entries (RGB)
+        self.menu_entry_alpha_bg = 160              # alpha for the menu entries squares (0=full transparent, 255=not)
+        self.menu_entry_color_text = (255, 255, 0)  # text color for the menu (RGB)
