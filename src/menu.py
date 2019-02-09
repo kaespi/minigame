@@ -26,9 +26,9 @@ class Menu():
         """Displays the menu during the game"""
         menu_entries = [{'key': Menuentry.continue_game, 'text': 'Continue'},
                         {'key': Menuentry.abort_game, 'text': 'End Game'}]
-        return self.show_menu(menu_entries, escape_allowed=False)
+        return self.show_menu(menu_entries, escape_allowed=False, clear_background=False)
 
-    def show_menu(self, entries, selected=0, escape_allowed=True):
+    def show_menu(self, entries, selected=0, escape_allowed=True, clear_background=True):
         """Displays a menu with a number of (vertically arranged) entries"""
 
         # derive the font size from the amount of space available
@@ -45,7 +45,7 @@ class Menu():
 
         while True:
             if update_display:
-                self.draw_menu(entries, selected, font, font_size)
+                self.draw_menu(entries, selected, font, font_size, clear_background)
 
             # needed to keep the events in sync with the system. According to pygame manual should
             # should be called once per game loop
@@ -63,11 +63,12 @@ class Menu():
                     elif event.key == pygame.K_RETURN:
                         return entries[selected]['key']
 
-    def draw_menu(self, entries, selected, font, font_size):
+    def draw_menu(self, entries, selected, font, font_size, clear_background=False):
         """Actually draws the menu and updates the display"""
         y = 10
 
-        self.screen.fill(self.cfg.bg_color)
+        if clear_background:
+            self.screen.fill(self.cfg.bg_color)
 
         for ix in range(0, len(entries)):
             if selected == ix:
