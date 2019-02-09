@@ -22,7 +22,13 @@ class Menu():
         else:
             return choice
 
-    def show_menu(self, entries, selected=0):
+    def in_game_menu(self):
+        """Displays the menu during the game"""
+        menu_entries = [{'key': Menuentry.continue_game, 'text': 'Continue'},
+                        {'key': Menuentry.abort_game, 'text': 'End Game'}]
+        return self.show_menu(menu_entries, escape_allowed=False)
+
+    def show_menu(self, entries, selected=0, escape_allowed=True):
         """Displays a menu with a number of (vertically arranged) entries"""
 
         # derive the font size from the amount of space available
@@ -48,7 +54,7 @@ class Menu():
             events = pygame.event.get()
             for event in events:
                 if event.type == pygame.KEYDOWN:
-                    if event.key == pygame.K_ESCAPE:
+                    if event.key == pygame.K_ESCAPE and escape_allowed:
                         return None
                     elif event.key == pygame.K_DOWN and selected < len(entries)-1:
                         selected += 1

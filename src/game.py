@@ -106,7 +106,10 @@ class Game():
             for event in events:
                 if event.type == pygame.KEYDOWN:
                     if event.key == pygame.K_ESCAPE:
-                        return None
+                        in_game_menu_choice = self.menu.in_game_menu()
+                        if in_game_menu_choice == Menuentry.abort_game:
+                            return False
+                        t_ms = pygame.time.get_ticks()
                     elif event.key == self.cfg.player1_up and len(self.players) >= 1:
                         self.players[0].command_direction(Direction.up)
                     elif event.key == self.cfg.player1_right and len(self.players) >= 1:

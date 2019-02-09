@@ -8,7 +8,10 @@ class Direction(enum.Enum):
     down = 2
     left = 3
 
+
 class Menuentry(enum.Enum):
     """Entries in the game menu"""
     run_level = 1
     exit = 2
+    continue_game = 3
+    abort_game = 4
