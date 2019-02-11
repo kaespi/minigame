@@ -1,6 +1,8 @@
 import pygame
+import time
 
 from src.enumtypes import Menuentry
+from src.lang import Lang
 
 class Menu():
     """Class handling the game menu"""
@@ -9,22 +11,81 @@ class Menu():
         """Constructor for class Menu"""
         self.screen = screen
         self.cfg = cfg
+        self.lang = Lang()
 
     def main_menu(self):
         """Displays the main menu"""
-        menu_entries = [{'key': Menuentry.run_level, 'text': 'Play'},
-                        {'key': Menuentry.exit, 'text': 'Quit'}]
+        menu_entries = [{'key': Menuentry.run_level_1p, 'text': self.lang.trans['menu_main_play_1p']},
+                        {'key': Menuentry.run_level_2p, 'text': self.lang.trans['menu_main_play_2p']},
+                        {'key': Menuentry.settings, 'text': self.lang.trans['menu_main_settings']},
+                        {'key': Menuentry.exit, 'text': self.lang.trans['menu_main_quit']}]
         choice = self.show_menu(menu_entries)
         if choice is None:
             return Menuentry.exit
+        elif choice == Menuentry.settings:
+            return self.settings_menu()
         else:
             return choice
 
     def in_game_menu(self):
         """Displays the menu during the game"""
-        menu_entries = [{'key': Menuentry.continue_game, 'text': 'Continue'},
-                        {'key': Menuentry.abort_game, 'text': 'End Game'}]
+        menu_entries = [{'key': Menuentry.continue_game, 'text': self.lang.trans['menu_game_continue']},
+                        {'key': Menuentry.abort_game, 'text': self.lang.trans['menu_game_end_game']}]
         return self.show_menu(menu_entries, escape_allowed=False, clear_background=False)
+
+    def settings_menu(self):
+        """Displays the settings menu"""
+        menu_entries = [{'key': Menuentry.player_1_settings, 'text': self.lang.trans['menu_settings_player1']},
+                        {'key': Menuentry.player_2_settings, 'text': self.lang.trans['menu_settings_player2']},
+                        {'key': Menuentry.back, 'text': self.lang.trans['menu_settings_back']}]
+        choice = self.show_menu(menu_entries)
+        if choice is None or choice == Menuentry.back:
+            return self.main_menu()
+        elif choice == Menuentry.player_1_settings:
+            return self.config_player_controls_menu(1)
+        elif choice == Menuentry.player_2_settings:
+            return self.config_player_controls_menu(2)
+
+    def config_player_controls_menu(self, player_num=1):
+        """Handles the menu for configuring the controls for any player"""
+        if player_num == 1:
+            self.cfg.player1_right = self.get_player_key(self.lang.trans['menu_settings_key_right'])
+            self.cfg.player1_left = self.get_player_key(self.lang.trans['menu_settings_key_left'])
+            self.cfg.player1_up = self.get_player_key(self.lang.trans['menu_settings_key_up'])
+            self.cfg.player1_down = self.get_player_key(self.lang.trans['menu_settings_key_down'])
+        elif player_num == 2:
+            self.cfg.player2_right = self.get_player_key(self.lang.trans['menu_settings_key_right'])
+            self.cfg.player2_left = self.get_player_key(self.lang.trans['menu_settings_key_left'])
+            self.cfg.player2_up = self.get_player_key(self.lang.trans['menu_settings_key_up'])
+            self.cfg.player2_down = self.get_player_key(self.lang.trans['menu_settings_key_down'])
+
+        return self.settings_menu()
+
+    def get_player_key(self, text):
+        """Shows a menu entry for getting the player's keys"""
+        # derive the font size from the amount of space available
+        font_size = int(self.screen.get_height() / 9)
+
+        # load font, prepare values
+        font = pygame.font.Font(None, font_size)
+
+        # empty the past events first
+        pygame.event.pump()
+        pygame.event.get()
+
+        entries = [{'key': None, 'text': text}]
+        self.draw_menu(entries, None, font, font_size, clear_background=True)
+
+        key_detected = None
+        while key_detected is None:
+            events = pygame.event.get()
+            for event in events:
+                if event.type == pygame.KEYDOWN:
+                    key_detected = event.key
+                    break
+            time.sleep(0.005)
+
+        return key_detected
 
     def show_menu(self, entries, selected=0, escape_allowed=True, clear_background=True):
         """Displays a menu with a number of (vertically arranged) entries"""

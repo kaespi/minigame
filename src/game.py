@@ -38,7 +38,7 @@ class Game():
         exit_menu = False
         while not exit_menu:
             menu_choice = self.menu.main_menu()
-            if menu_choice == Menuentry.run_level:
+            if menu_choice == Menuentry.run_level_1p:
                 if self.load_level('level_test1.txt'):
                     level_result = self.run_level()
                     if level_result is None:
