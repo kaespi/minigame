@@ -50,12 +50,12 @@ class Menu():
         """Handles the menu for configuring the controls for any player"""
         abort = False
         if not abort:
-            key_right = self.get_player_key(self.lang.trans['menu_settings_key_right'])
-            if key_right == pygame.K_ESCAPE:
-                abort = True
-        if not abort:
             key_left = self.get_player_key(self.lang.trans['menu_settings_key_left'])
             if key_left == pygame.K_ESCAPE:
+                abort = True
+        if not abort:
+            key_right = self.get_player_key(self.lang.trans['menu_settings_key_right'])
+            if key_right == pygame.K_ESCAPE:
                 abort = True
         if not abort:
             key_up = self.get_player_key(self.lang.trans['menu_settings_key_up'])
