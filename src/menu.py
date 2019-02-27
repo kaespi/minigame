@@ -72,11 +72,15 @@ class Menu():
                 self.cfg.player1_left = key_left
                 self.cfg.player1_up = key_up
                 self.cfg.player1_down = key_down
+                # save the new settings now
+                self.cfg.store_config()
             elif player_num == 2:
                 self.cfg.player2_right = key_right
                 self.cfg.player2_left = key_left
                 self.cfg.player2_up = key_up
                 self.cfg.player2_down = key_down
+                # save the new settings now
+                self.cfg.store_config()
 
         return self.settings_menu()
 
