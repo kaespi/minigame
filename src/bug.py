@@ -3,6 +3,7 @@ import pygame
 from src.runner import Runner
 from src.enumtypes import Direction
 from src.gameaction import can_you_see_me
+from src.util import get_reverse_direction
 
 
 class Bug(Runner):
@@ -34,17 +35,7 @@ class Bug(Runner):
 
     def reverse_direction(self):
         """Reverses the direction (i.e. up(0)<->down(2), right(1)<->left(3)"""
-        if self.move_direction is not None:
-            if self.move_direction == Direction.up:
-                self.move_direction = Direction.down
-            elif self.move_direction == Direction.right:
-                self.move_direction = Direction.left
-            elif self.move_direction == Direction.down:
-                self.move_direction = Direction.up
-            elif self.move_direction == Direction.left:
-                self.move_direction = Direction.right
-            else:
-                self.move_direction = None
+        self.move_direction = get_reverse_direction(self.move_direction)
 
     def update_position(self, dt_ms, players=[]):
         """updates the position of the bug"""
