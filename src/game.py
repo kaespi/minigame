@@ -7,7 +7,7 @@ from src.menu import Menu
 from src.grid import Grid
 from src.player import Player
 from src.bug import Bug
-from src.gameaction import bug_catched_player
+from src.gameaction import bug_catched_player, bounce_back
 from src.enumtypes import Direction, Menuentry
 
 
@@ -145,6 +145,9 @@ class Game():
                 player.update_position(dt_ms)
             for bug in self.bugs:
                 bug.update_position(dt_ms, self.players)
+
+            # let the bugs bounce back when they hit each other
+            bounce_back(self.bugs, self.cfg.bug_size/self.cfg.grid_height)
 
             # check if any bug caught any player
             bug_catched_player(self.bugs, self.players,

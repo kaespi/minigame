@@ -1,7 +1,8 @@
 import pygame
 
+from src.runner import Runner
 from src.gridutil import grid_index_right, grid_index_down
-from src.enumtypes import Direction
+from src.util import get_reverse_direction
 
 
 def bug_catched_player(bugs, players, bug_size=10/50, player_size=8/50):
@@ -73,3 +74,19 @@ def can_you_see_me(p1, p2, gridlines):
         can_see = not gap_found
 
     return can_see
+
+
+def bounce_back(runners, size):
+    """Handles the event when runners bounce against each other (they should bounce back and reverse movement)"""
+    size2 = size*size
+    for r1 in range(0, len(runners)):
+        for r2 in range(r1+1, len(runners)):
+            # check if the two runners are too close
+            dx = runners[r1].x - runners[r2].x
+            dy = runners[r1].y - runners[r2].y
+            if dx*dx + dy*dy < size2:
+                # only reverse the movement direction if the runner is actually moving - of course
+                if runners[r1].vel > 0 and runners[r1].move_direction is not None:
+                    runners[r1].move_direction = get_reverse_direction(runners[r1].move_direction)
+                if runners[r2].vel > 0 and runners[r2].move_direction is not None:
+                    runners[r2].move_direction = get_reverse_direction(runners[r2].move_direction)
