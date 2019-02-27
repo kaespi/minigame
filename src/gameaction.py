@@ -1,6 +1,4 @@
-import pygame
 
-from src.runner import Runner
 from src.gridutil import grid_index_right, grid_index_down
 from src.util import get_reverse_direction
 
