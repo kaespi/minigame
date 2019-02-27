@@ -48,16 +48,35 @@ class Menu():
 
     def config_player_controls_menu(self, player_num=1):
         """Handles the menu for configuring the controls for any player"""
-        if player_num == 1:
-            self.cfg.player1_right = self.get_player_key(self.lang.trans['menu_settings_key_right'])
-            self.cfg.player1_left = self.get_player_key(self.lang.trans['menu_settings_key_left'])
-            self.cfg.player1_up = self.get_player_key(self.lang.trans['menu_settings_key_up'])
-            self.cfg.player1_down = self.get_player_key(self.lang.trans['menu_settings_key_down'])
-        elif player_num == 2:
-            self.cfg.player2_right = self.get_player_key(self.lang.trans['menu_settings_key_right'])
-            self.cfg.player2_left = self.get_player_key(self.lang.trans['menu_settings_key_left'])
-            self.cfg.player2_up = self.get_player_key(self.lang.trans['menu_settings_key_up'])
-            self.cfg.player2_down = self.get_player_key(self.lang.trans['menu_settings_key_down'])
+        abort = False
+        if not abort:
+            key_right = self.get_player_key(self.lang.trans['menu_settings_key_right'])
+            if key_right == pygame.K_ESCAPE:
+                abort = True
+        if not abort:
+            key_left = self.get_player_key(self.lang.trans['menu_settings_key_left'])
+            if key_left == pygame.K_ESCAPE:
+                abort = True
+        if not abort:
+            key_up = self.get_player_key(self.lang.trans['menu_settings_key_up'])
+            if key_up == pygame.K_ESCAPE:
+                abort = True
+        if not abort:
+            key_down = self.get_player_key(self.lang.trans['menu_settings_key_down'])
+            if key_down == pygame.K_ESCAPE:
+                abort = True
+        # only store the values if the configuration wasn't aborted (with the ESC key)
+        if not abort:
+            if player_num == 1:
+                self.cfg.player1_right = key_right
+                self.cfg.player1_left = key_left
+                self.cfg.player1_up = key_up
+                self.cfg.player1_down = key_down
+            elif player_num == 2:
+                self.cfg.player2_right = key_right
+                self.cfg.player2_left = key_left
+                self.cfg.player2_up = key_up
+                self.cfg.player2_down = key_down
 
         return self.settings_menu()
 
