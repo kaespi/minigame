@@ -63,7 +63,8 @@ def can_you_see_me(p1, p2, gridlines):
         y_top = int(y1)
         ix_v, ix_h = grid_index_down(p1[0], y_top)
         while y_top < y2:
-            if ix_v >= len(gridlines) or gridlines[ix_v][ix_h] is None:
+            if ix_v >= len(gridlines) or ix_h >= len(gridlines[ix_v]) or \
+                    gridlines[ix_v][ix_h] is None:
                 gap_found = True
                 break
             y_top += 1
