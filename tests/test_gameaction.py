@@ -17,9 +17,7 @@ class TestGameaction(unittest.TestCase):
     def test_canyouseeme(self):
         """Tests can_you_see_me()"""
 
-        # horizontal visibility
-
-        # constructs a grid as follows: o-o-o o-o (with x a node and - a grid line)
+        # constructs a grid as follows: o-o-o o-o (with 'o' a node and '-' a grid line)
         #                               |
         #                               o
         #                               |
@@ -39,6 +37,8 @@ class TestGameaction(unittest.TestCase):
                      [None],    # vertical gap between (0,2) and (0,3)
                      [None],    # horizontal gridlines with y=3
                      [Gridline(self.cfg, None, [0, 3], [0, 4])]]
+
+        # horizontal visibility
 
         # checks that at the same node the two points are visible
         self.assertTrue(gameaction.can_you_see_me([0, 0], [0, 0], gridlines))
@@ -108,6 +108,34 @@ class TestGameaction(unittest.TestCase):
         self.assertFalse(gameaction.can_you_see_me([0, 0.9], [0, 4.0], gridlines))
         self.assertFalse(gameaction.can_you_see_me([0, 0.0], [0, 3.0], gridlines))
         self.assertFalse(gameaction.can_you_see_me([0, 0.9], [0, 3.1], gridlines))
+
+        # visibility and gaps
+
+        # constructs a grid as follows: o-o (with 'o' a node and '-' a grid line)
+        #                               | |
+        #                               o-o
+        #                               |
+        #                               o-o
+        #                               | |
+        #                               o-o
+        gridlines = [[Gridline(self.cfg, None, [0, 0], [1, 0])],    # 1x horizontal
+                     [Gridline(self.cfg, None, [0, 0], [0, 1]),     # 2x vertical
+                      Gridline(self.cfg, None, [1, 0], [1, 1])],
+                     [Gridline(self.cfg, None, [0, 1], [0, 2])],    # 1x horizontal
+                     [Gridline(self.cfg, None, [0, 1], [0, 2])],    # 1x vertical
+                     [Gridline(self.cfg, None, [0, 2], [1, 2])],    # 1x horizontal
+                     [Gridline(self.cfg, None, [0, 2], [0, 3]),     # 2x vertical
+                      Gridline(self.cfg, None, [1, 2], [1, 3])],
+                     [Gridline(self.cfg, None, [0, 3], [1, 3])]]    # 1x horizontal
+
+        # check that points on the (1,0)..(1,1) and (1,2)..(1,3) are not visible, because
+        # there's a gap in between
+        self.assertFalse(gameaction.can_you_see_me([1, 0.0], [1, 2.0], gridlines))
+        self.assertFalse(gameaction.can_you_see_me([1, 0.5], [1, 2.0], gridlines))
+        self.assertFalse(gameaction.can_you_see_me([1, 0.5], [1, 2.5], gridlines))
+        self.assertFalse(gameaction.can_you_see_me([1, 0.0], [1, 2.5], gridlines))
+        self.assertFalse(gameaction.can_you_see_me([1, 1.0], [1, 2.0], gridlines))
+        self.assertFalse(gameaction.can_you_see_me([1, 1.0], [1, 3.0], gridlines))
 
 
 unittest.main()
