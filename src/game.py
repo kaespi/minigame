@@ -187,10 +187,8 @@ class Game():
             pygame.display.update()
 
             if not any_player_alive:
-                print("Level failed")
                 time.sleep(2)
                 return LevelResult.fail
             elif not any_square_not_complete:
-                print("Level completed")
                 time.sleep(2)
                 return LevelResult.success
