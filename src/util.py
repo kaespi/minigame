@@ -29,7 +29,7 @@ def scan_for_levels(num_players=1):
     level_files = []
     for file in files_found:
         if is_valid_level_file(file, num_players):
-            level_files.append(file)
+            level_files.append(os.path.join(path_to_levels, file))
 
     return sorted(level_files)
 
