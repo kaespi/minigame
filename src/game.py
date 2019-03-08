@@ -52,7 +52,7 @@ class Game():
         level_num = 1
         for level in levels:
             if self.load_level(level):
-                level_result = self.run_level()
+                level_result = self.run_level(level_num)
 
                 if level_result == LevelResult.abort:
                     # level was aborted, therefore stop the game
@@ -102,11 +102,14 @@ class Game():
 
         return success
 
-    def run_level(self):
+    def run_level(self, level=None):
         """Runs a level (main while loop during playing)"""
         if self.grid is None or len(self.players) == 0:
             # if there's no grid or no player cannot do anything and therefore terminate early
             return LevelResult.error
+
+        if level is not None:
+            self.level_countdown(level)
 
         t_ms = pygame.time.get_ticks()
 
@@ -173,18 +176,7 @@ class Game():
                     any_square_not_complete = True
 
             # drawing
-            self.screen.fill(self.cfg.bg_color)
-
-            # draw the grid
-            self.grid.draw_grid()
-
-            # draw the players and bugs
-            for player in self.players:
-                player.draw()
-            for bug in self.bugs:
-                bug.draw()
-
-            pygame.display.update()
+            self.draw_game_screen()
 
             if not any_player_alive:
                 time.sleep(2)
@@ -192,3 +184,40 @@ class Game():
             elif not any_square_not_complete:
                 time.sleep(2)
                 return LevelResult.success
+
+    def draw_game_screen(self):
+        """Draws the game (i.e. grid, players, bugs)"""
+        # drawing
+        self.screen.fill(self.cfg.bg_color)
+
+        # draw the grid
+        self.grid.draw_grid()
+
+        # draw the players and bugs
+        for player in self.players:
+            player.draw()
+        for bug in self.bugs:
+            bug.draw()
+
+        pygame.display.update()
+
+    def level_countdown(self, level=1):
+        """Starts the countdown for the level"""
+        # draws the game in the background (to help the player familiarize himself with the level)
+        self.draw_game_screen()
+
+        # empty the past events first (the user can abort the countdown by pressing
+        # any key...)
+        pygame.event.pump()
+        pygame.event.get()
+
+        t_start_ms = pygame.time.get_ticks() + 2000
+
+        end_countdown = False
+        while not end_countdown and pygame.time.get_ticks() < t_start_ms:
+            time.sleep(0.005)
+            events = pygame.event.get()
+            for event in events:
+                if event.type == pygame.KEYDOWN and event.key == pygame.K_RETURN:
+                    end_countdown = True
+                    break
