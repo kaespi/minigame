@@ -22,7 +22,6 @@ def get_reverse_direction(direction):
 
 def scan_for_levels(num_players=1):
     """Scans the levels folder for level files"""
-    print("#players="+str(num_players))
     path_to_file = os.path.dirname(os.path.realpath(__file__))
     path_to_levels = os.path.join(path_to_file, '..', 'levels')
     files_found = os.listdir(path_to_levels)
