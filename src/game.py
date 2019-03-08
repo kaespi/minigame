@@ -8,7 +8,8 @@ from src.grid import Grid
 from src.player import Player
 from src.bug import Bug
 from src.gameaction import bug_catched_player, bounce_back
-from src.enumtypes import Direction, Menuentry
+from src.enumtypes import Direction, Menuentry, LevelResult
+import src.util as util
 
 
 class Game():
@@ -39,18 +40,24 @@ class Game():
         while not exit_menu:
             menu_choice = self.menu.main_menu()
             if menu_choice == Menuentry.run_level_1p:
-                if self.load_level('level_1p_07.txt'):
-                    level_result = self.run_level()
-                    if level_result is None:
-                        exit_menu = True
-            if menu_choice == Menuentry.run_level_2p:
-                #if self.load_level('level_test1.txt'):
-                if self.load_level('level_test2.txt'):
-                    level_result = self.run_level()
-                    if level_result is None:
-                        exit_menu = True
+                self.start_game(num_players=1)
+            elif menu_choice == Menuentry.run_level_2p:
+                self.start_game(num_players=2)
             else:
                 exit_menu = True
+
+    def start_game(self, num_players=1):
+        """Starts the game with a given number of players"""
+        levels = util.scan_for_levels(num_players)
+        level_num = 1
+        for level in levels:
+            if self.load_level(level):
+                level_result = self.run_level()
+
+                if level_result == LevelResult.abort:
+                    # level was aborted, therefore stop the game
+                    return False
+            level_num += 1
 
     def load_level(self, filename):
         """Loads a level file"""
@@ -97,7 +104,7 @@ class Game():
         """Runs a level (main while loop during playing)"""
         if self.grid is None or len(self.players) == 0:
             # if there's no grid or no player cannot do anything and therefore terminate early
-            return None
+            return LevelResult.error
 
         t_ms = pygame.time.get_ticks()
 
@@ -112,7 +119,7 @@ class Game():
                     if event.key == pygame.K_ESCAPE:
                         in_game_menu_choice = self.menu.in_game_menu()
                         if in_game_menu_choice == Menuentry.abort_game:
-                            return False
+                            return LevelResult.abort
                         t_ms = pygame.time.get_ticks()
                     elif event.key == self.cfg.player1_up and len(self.players) >= 1:
                         self.players[0].command_direction(Direction.up)
@@ -180,8 +187,8 @@ class Game():
             if not any_player_alive:
                 print("Level failed")
                 time.sleep(2)
-                return False
+                return LevelResult.fail
             elif not any_square_not_complete:
                 print("Level completed")
                 time.sleep(2)
-                return True
+                return LevelResult.success

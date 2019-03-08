@@ -20,3 +20,11 @@ class Menuentry(enum.Enum):
     player_1_settings = 7
     player_2_settings = 8
     back = 9
+
+
+class LevelResult(enum.Enum):
+    """Result of a level"""
+    success = 0 # level was completed successfully
+    abort = 1   # level was aborted (through the ESC-menu)
+    fail = 2    # level failed (caught by bug)
+    error = 3   # level error (e.g. wrongly composed level file)
