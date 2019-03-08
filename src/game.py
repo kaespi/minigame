@@ -59,6 +59,8 @@ class Game():
                     return False
             level_num += 1
 
+        return True
+
     def load_level(self, filename):
         """Loads a level file"""
 
