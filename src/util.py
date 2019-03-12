@@ -73,3 +73,11 @@ def is_valid_level_file(filename, num_players=None):
             valid_filename = False
 
     return valid_filename
+
+
+def get_font_size(screen_height=None):
+    """Returns the font size to be used given the screen height in pixels"""
+    if screen_height is None:
+        return 20
+    else:
+        return int(screen_height / 9)

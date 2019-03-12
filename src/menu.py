@@ -3,6 +3,8 @@ import time
 
 from src.enumtypes import Menuentry
 from src.lang import Lang
+import src.util as util
+
 
 class Menu():
     """Class handling the game menu"""
@@ -86,10 +88,8 @@ class Menu():
 
     def get_player_key(self, text):
         """Shows a menu entry for getting the player's keys"""
-        # derive the font size from the amount of space available
-        font_size = int(self.screen.get_height() / 9)
-
-        # load font, prepare values
+        # load and prepare font
+        font_size = util.get_font_size(self.screen.get_height())
         font = pygame.font.Font(None, font_size)
 
         # empty the past events first
@@ -113,10 +113,8 @@ class Menu():
     def show_menu(self, entries, selected=0, escape_allowed=True, clear_background=True):
         """Displays a menu with a number of (vertically arranged) entries"""
 
-        # derive the font size from the amount of space available
-        font_size = int(self.screen.get_height() / 9)
-
-        # load font, prepare values
+        # load and prepare font
+        font_size = util.get_font_size(self.screen.get_height())
         font = pygame.font.Font(None, font_size)
 
         update_display = True
