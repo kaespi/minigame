@@ -213,6 +213,42 @@ class Game():
 
         t_start_ms = pygame.time.get_ticks() + 2000
 
+        screen_width, screen_height = self.screen.get_size()
+
+        # load and prepare font
+        font_size = util.get_font_size(self.screen.get_height())
+        font = pygame.font.Font(None, font_size)
+
+        # prepare the boxes for the text
+        surface_text = font.render('Level '+str(level), 1, self.cfg.menu_entry_color_text)
+        box_width, box_height = surface_text.get_size()
+
+        # 10% of the box added in vertical and horizontal direction
+        d = int(box_height * 0.1)
+        box_height += d
+        box_width += d
+
+        # do not center the text, but rather somehow make it appear at 1/3 of the window
+        y = int((screen_height - box_height) / 3)
+
+        if box_width < screen_width / 2:
+            box_width = int(screen_width/2)
+
+        box_x = int((screen_width - box_width)/2)
+
+        surface_rect = pygame.Surface((box_width, box_height))
+        if self.cfg.menu_entry_color_bg is not None:
+            surface_rect.fill(self.cfg.menu_entry_color_bg)
+        if self.cfg.menu_entry_alpha_bg is not None:
+            surface_rect.set_alpha(self.cfg.menu_entry_alpha_bg)
+        self.screen.blit(surface_rect, (box_x, y))
+
+        text_x = int((screen_width - surface_text.get_width())/2)
+        text_y = y + int((box_height - surface_text.get_height())/2 - 0.5)
+        self.screen.blit(surface_text, (text_x, text_y))
+
+        pygame.display.update()
+
         end_countdown = False
         while not end_countdown and pygame.time.get_ticks() < t_start_ms:
             time.sleep(0.005)
