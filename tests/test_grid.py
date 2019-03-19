@@ -284,5 +284,52 @@ class TestGrid(unittest.TestCase):
         self.assertTrue(self.grid.gridlines[2][0] in self.grid.squares[0].surrounding_gridlines)
         self.assertTrue(self.grid.gridlines[2][1] in self.grid.squares[0].surrounding_gridlines)
 
+    def test_grid_size(self):
+        """Tests determination of the grid size"""
+
+        # test an easy grid with just one square...
+        self.grid.read_grid("test_grid1.txt")
+        [w, h] = self.grid.get_grid_size()
+        self.assertEqual(w, 1)
+        self.assertEqual(h, 1)
+
+        # create a new grid:
+        # +-+-+-+
+        # | | | |
+        # +-+-+-+
+        self.grid.gridlines = [[Gridline(self.cfg, None, [0, 0], [1, 0]),   # 3x horizontal
+                                Gridline(self.cfg, None, [1, 0], [2, 0]),
+                                Gridline(self.cfg, None, [2, 0], [3, 0])],
+                               [Gridline(self.cfg, None, [0, 0], [0, 1]),   # 4x vertical
+                                Gridline(self.cfg, None, [1, 0], [1, 1]),
+                                Gridline(self.cfg, None, [2, 0], [2, 1]),
+                                Gridline(self.cfg, None, [3, 0], [3, 1])],
+                               [Gridline(self.cfg, None, [0, 1], [1, 1]),   # 3x horizontal
+                                Gridline(self.cfg, None, [1, 1], [2, 1]),
+                                Gridline(self.cfg, None, [2, 1], [3, 1])]]
+        [w, h] = self.grid.get_grid_size()
+        self.assertEqual(w, 3)
+        self.assertEqual(h, 1)
+
+        # create a new grid:
+        # +-+-+
+        # | | |
+        # +-+-+
+        # | |
+        # +-+
+        self.grid.gridlines = [[Gridline(self.cfg, None, [0, 0], [1, 0]),   # 2x horizontal
+                                Gridline(self.cfg, None, [1, 0], [2, 0])],
+                               [Gridline(self.cfg, None, [0, 0], [0, 1]),   # 3x vertical
+                                Gridline(self.cfg, None, [1, 0], [1, 1]),
+                                Gridline(self.cfg, None, [2, 0], [2, 1])],
+                               [Gridline(self.cfg, None, [0, 1], [1, 1]),   # 2x horizontal
+                                Gridline(self.cfg, None, [1, 1], [2, 1])],
+                               [Gridline(self.cfg, None, [0, 1], [0, 2]),   # 2x vertical
+                                Gridline(self.cfg, None, [1, 1], [1, 2])],
+                               [Gridline(self.cfg, None, [0, 2], [1, 2])]]  # 1x horizontal
+        [w, h] = self.grid.get_grid_size()
+        self.assertEqual(w, 2)
+        self.assertEqual(h, 2)
+
 
 unittest.main()

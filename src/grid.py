@@ -104,6 +104,23 @@ class Grid():
 
         return nodes[:]
 
+    def get_grid_size(self):
+        """Returns the width and height of the grid in number of grid squares"""
+        width = 0
+        height = 0
+        for ix_v in range(0, len(self.gridlines)):
+            for ix_h in range(0, len(self.gridlines[ix_v])):
+                if self.gridlines[ix_v][ix_h] is None:
+                    continue
+
+                if ix_v % 2 == 0 and ix_h+1 > width:
+                    # horizontal grid line
+                    width = ix_h + 1
+                elif ix_v % 2 == 1 and (ix_v - 1)/2 + 1 > height:
+                    # vertical grid line
+                    height = (ix_v - 1)/2 + 1
+        return [width, height]
+
     def is_gridline(self, ix_v, ix_h):
         """Checks if the indices ix_v and ix_h index a defined gridline"""
         if 0 <= ix_v < len(self.gridlines) and \
