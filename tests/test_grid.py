@@ -2,9 +2,9 @@
 import unittest
 import context
 
-from config import Gameconfig
-from gridline import Gridline
-from grid import Grid
+from src.config import Gameconfig
+from src.gridline import Gridline
+from src.grid import Grid
 
 
 class TestGridline(unittest.TestCase):
